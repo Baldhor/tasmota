@@ -206,7 +206,68 @@ module.exports = class TasmotaDevice extends Homey.Device {
 	this.sendCommand('shutterposition', String(value * 100));
     return true;
   }
-  
+
+  async onFlowCardAction(action, args, state) {
+    this.log('Received flow action: ' + action);
+    this.log('args:');
+    this.log(args);
+    this.log('state:');
+    this.log(state);
+
+    let cap= null;
+    let value= null;
+
+    if (this.getClass() == 'socket') {
+      this.log('checking for socket device');
+
+      let switchNr= /-(\d)-/.exec(action)[1];
+      cap= 'onoff.' + switchNr;
+      
+      if (action.endsWith('-toggle')) {
+        value= !this.getCapabilityValue(cap);
+      }
+      else if (action.endsWith('-on')) {
+        value= true;
+      }
+      else if (action.endsWith('-off')) {
+        value= false;
+      }
+      else {
+        this.log('unknow action');
+        return false;
+      }
+
+      this.setCapabilityValue(cap, value);
+      return this.onCapabilityOnoff(switchNr, value);
+    }
+
+    else if (this.getClass() == 'blinds') {
+      this.log('checking for shutter device');
+
+      cap= 'windowcoverings_set';
+      
+      if (action.endsWith('-stop')) {
+	return this.sendCommand('shutterstop');
+      }
+      else if (action.endsWith('-open')) {
+        value= 1;
+      }
+      else if (action.endsWith('-close')) {
+        value= 0;
+      }
+      else {
+        this.log('unknow action');
+        return false;
+      }
+
+      this.setCapabilityValue(cap, value);
+      return this.onCapabilityWindowCoveringsSet(value);
+    }
+
+    this.log('unknow class: ' + this.getClass());
+    return false;
+  }
+
   onDeleted() {
     this.log('being deleted, cleaning up');
     Homey.app.unregisterTasmotaDevice(this);

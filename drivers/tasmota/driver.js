@@ -11,35 +11,60 @@ module.exports = class TasmotaDriver extends Homey.Driver {
   }
 
   registerFlowTriggers() {
-/*
-switch-x-on
-switch-x-off
-shutter-1-opened
-shutter-1-closed
-shutter-1-changed
-*/
-/*
-    this.flowTriggerRfReceive = new Homey.FlowCardTriggerDevice('rf_receive').register();
-*/
+    this.triggers     = {};
+    
+    // Triggers for socket
+    for (let switchNr = 1; switchNr <= 4; switchNr++) {
+
+      [ 'on', 'off' ].forEach(type => {
+        let prop     = `switch-${ switchNr }-${ type }`;
+        let flowName = `tasmota-for-homey-${ prop }`;
+
+        // Register flow trigger
+        this.triggers[prop] = new Homey.FlowCardTriggerDevice(flowName).register();
+      });
+    }
+    
+    // Triggers for shutter
+    [ 'opened', 'closed' ].forEach(type => {
+      let prop     = `shutter-${ type }`;
+      let flowName = `tasmota-for-homey-${ prop }`;
+
+      // Register flow trigger
+      this.triggers[prop] = new Homey.FlowCardTriggerDevice(flowName).register();
+    });
   }
 
   registerFlowActions() {
-/*
-switch-x-on
-switch-x-off
-switch-x-toggle
-shutter-1-open
-shutter-1-stop
-shutter-1-close
-shutter-1-set
-*/
-/*
-    new Homey.FlowCardAction('rf_transmit')
-        .register()
-        .registerRunListener((args, state) => {
-          return args.device.transmit(args.sync, args.high, args.low, args.code);
-        })
-*/
+    this.actions     = {};
+    
+    // Actions for socket
+    for (let switchNr = 1; switchNr <= 4; switchNr++) {
+      [ 'on', 'off', 'toggle' ].forEach(type => {
+        let prop     = `switch-${ switchNr }-${ type }`;
+        let flowName = `tasmota-for-homey-${ prop }`;
+
+        // Register flow action
+        this.actions[prop]= new Homey.FlowCardAction(flowName)
+            .register()
+            .registerRunListener((args, state) => {
+              return args.device.onFlowCardAction(flowName, args, state);
+            });
+      });
+    }
+    
+    // Actions for shutter
+    [ 'open', 'stop', 'close' ].forEach(type => {
+      let prop     = `shutter-${ type }`;
+      let flowName = `tasmota-for-homey-${ prop }`;
+
+      // Register flow action
+      this.actions[prop]= new Homey.FlowCardAction(flowName)
+          .register()
+          .registerRunListener((args, state) => {
+            return args.device.onFlowCardAction(flowName, args, state);
+          });
+    });
   }
 
   async getConnectionForDevice(device, { retry = true, settings = null } = {}) {
