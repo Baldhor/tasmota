@@ -1,8 +1,8 @@
 {
-  "name": "name.klep.sonoff",
-  "version": "4.0.8",
-  "description": "Control Sonoff devices using Homey",
-  "author": "Robert Klep <robert@klep.name>",
+  "name": "com.athom.tasmota",
+  "version": "1.0.0",
+  "description": "Control devices running Tasmota using Homey",
+  "author": "Patrice Silliard and Robert Kelp <robert@klep.name>",
   "license": "MIT",
   "scripts": {
     "compose": "homeyConfig compose"
