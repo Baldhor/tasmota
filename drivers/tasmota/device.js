@@ -7,6 +7,9 @@ module.exports = class TasmotaDevice extends Homey.Device {
     this.log(`device init: name = ${ this.getName() }, id = ${ this.getId() }, module type = ${ this.getModule() }, version = ${ this.getVersion() }, topic = ${ this.getTopic() }`);
     this.log('device init: class = ' + this.getClass() + ', capabilities: ' + this.getCapabilities().join(', '));
     
+    // Cannot trust capabilityValue from Homey, so we better maintains our own based on device feedback, and not what Homey (or the user believe)!
+    this.lastKnowCapabilityValues= {};
+
     // Register capability listeners
     if (this.getClass() == 'socket' && this.hasCapability('onoff.1')) {
       this.log('register capability listener: ' + 'onoff.1');
@@ -168,13 +171,39 @@ module.exports = class TasmotaDevice extends Homey.Device {
   }
   
   onPowerXReceived(switchNr, data) {
-    this.log('power' + switchNr + ' received:', data);
-    this.setCapabilityValue('onoff.' + switchNr, data === 'ON');
+    this.log('power' + switchNr + ' received: ' + data);
+    let capabilityName= 'onoff.' + switchNr;
+
+    let newValue= (data === 'ON');
+    let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    this.setCapabilityValue(capabilityName, newValue);
+    
+    if (newValue != oldValue) {
+      this.lastKnowCapabilityValues[capabilityName]= newValue;
+      let triggerName= newValue ? `switch-${ switchNr }-on` : `switch-${ switchNr }-off`;
+      
+      this.log('Send trigger: ' + triggerName);
+      this.getDriver().triggers[triggerName].trigger(this);
+    }
   }
 
   onShutter1PositionReceived(data) {
     this.log('shutter1 position received:', data);
-    this.setCapabilityValue('windowcoverings_set', parseFloat(data) / 100);
+    let capabilityName= 'windowcoverings_set';
+
+    let newValue= (parseFloat(data) / 100);
+    let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    this.setCapabilityValue(capabilityName, newValue);
+
+    if (newValue != oldValue) {
+      this.lastKnowCapabilityValues[capabilityName]= newValue;
+      let triggerName= (newValue == 1) ? `shutter-opened` : (newValue == 0) ? `shutter-closed` : null;
+      
+      if (triggerName != null) {
+        this.log('Send trigger: ' + triggerName);
+        this.getDriver().triggers[triggerName].trigger(this);
+      }
+    }
   }
 
   async onCapabilityOnoffX(switchNr, value) {
@@ -194,36 +223,37 @@ module.exports = class TasmotaDevice extends Homey.Device {
   }
 
   async onCapabilityOnoff1(value) {
-    return this.sendCommand('power1', value ? 'on' : 'off');
+    this.sendCommand('power1', value ? 'on' : 'off');
+    return true;
   }
 
   async onCapabilityOnoff2(value) {
-    return this.sendCommand('power2', value ? 'on' : 'off');
+    this.sendCommand('power2', value ? 'on' : 'off');
+    return true;
   }
 
   async onCapabilityOnoff3(value) {
-    return this.sendCommand('power3', value ? 'on' : 'off');
+    this.sendCommand('power3', value ? 'on' : 'off');
+    return true;
   }
 
   async onCapabilityOnoff4(value) {
-    return this.sendCommand('power4', value ? 'on' : 'off');
+    this.sendCommand('power4', value ? 'on' : 'off');
+    return true;
   }
   
   async onCapabilityWindowCoveringsSet(value) {
-     if (value <= 0)
-	return this.sendCommand('shutterclose');
-     else if (value >= 1)
-	return this.sendCommand('shutteropen');
-     else
-	return this.sendCommand('shutterposition', String(value * 100));
+    if (value <= 0)
+      this.sendCommand('shutterclose');
+    else if (value >= 1)
+      this.sendCommand('shutteropen');
+    else
+      this.sendCommand('shutterposition', String(value * 100));
+    return true;
   }
 
   async onFlowCardAction(action, args, state) {
     this.log('Received flow action: ' + action);
-    this.log('args:');
-    this.log(args);
-    this.log('state:');
-    this.log(state);
 
     let cap= null;
     let value= null;

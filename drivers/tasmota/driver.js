@@ -11,7 +11,7 @@ module.exports = class TasmotaDriver extends Homey.Driver {
   }
 
   registerFlowTriggers() {
-    this.triggers     = {};
+    this.triggers= {};
     
     // Triggers for socket
     for (let switchNr = 1; switchNr <= 4; switchNr++) {
@@ -38,7 +38,7 @@ module.exports = class TasmotaDriver extends Homey.Driver {
   }
 
   registerFlowActions() {
-    this.actions     = {};
+    this.actions= {};
     
     // Actions for socket
     for (let switchNr = 1; switchNr <= 4; switchNr++) {
