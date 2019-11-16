@@ -22,7 +22,7 @@ Please report issues here: ***to be completed***
 
 ### Icon Attribution
 
-The initial application "Sonoff"(https://github.com/robertklep/name.klep.sonoff) was created by Robert Kelp.
+The initial application "Sonoff"(https://github.com/robertklep/name.klep.sonoff) was created by Robert Klep.
 He also designed the generic driver for tasmota devices (but didn't finished it :) ).
 => I removed all contents related to "original" Sonoff devices, all contents related to "specific" tasmota devices, and focused only on the "generic" driver for tasmota (see tested devices).
 
