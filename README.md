@@ -26,6 +26,30 @@ The initial application [Sonoff](https://github.com/robertklep/name.klep.sonoff)
 He also designed the generic driver for tasmota devices (but didn't finished it :) ).
 => I removed all contents related to "original" Sonoff devices, all contents related to "specific" tasmota devices, and focused only on the "generic" driver for tasmota (see tested devices).
 
+### How to install
+This app is not yet in Homey appstore, to install it you need to follow thiese steps:
+1. Install Node.js
+Download Node.js from [the Node.js website](https://nodejs.org/en/) and install it on your computer.
+
+2. Install athom-cli
+Open a command line, and install the athom-cli program by running the following command:
+$ npm install -g homey
+
+3. Install git
+Download a git client (for example: https://git-scm.com/) and install it.
+
+4. Clone the repository
+$ git clone https://github.com/Baldhor/tasmota-for-homey.git
+
+5. Go in the newly created folder
+$ cd tasmota-for-homey
+
+6. Install the application on your Homey
+$ homey app install
+
+7. Enjoy
+And don't hesite to report any issue or even pull request/enhancement
+
 ### Changelog
 
 * 1.0.0 (2019-11-09):
