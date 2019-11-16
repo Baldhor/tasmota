@@ -2,7 +2,7 @@
   "name": "com.athom.tasmota",
   "version": "1.0.0",
   "description": "Control devices running Tasmota using Homey",
-  "author": "Patrice Silliard and Robert Kelp <robert@klep.name>",
+  "author": "Baldhor",
   "license": "MIT",
   "scripts": {
     "compose": "homeyConfig compose"

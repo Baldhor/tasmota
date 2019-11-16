@@ -177,34 +177,45 @@ module.exports = class TasmotaDevice extends Homey.Device {
     this.setCapabilityValue('windowcoverings_set', parseFloat(data) / 100);
   }
 
+  async onCapabilityOnoffX(switchNr, value) {
+    if (switchNr == 1) {
+      return this.onCapabilityOnoff1(value);
+    }
+    else if (switchNr == 2) {
+      return this.onCapabilityOnoff2(value);
+    }
+    else if (switchNr == 3) {
+      return this.onCapabilityOnoff3(value);
+    }
+    else if (switchNr == 4) {
+      return this.onCapabilityOnoff4(value);
+    }
+    return false;
+  }
+
   async onCapabilityOnoff1(value) {
-    this.sendCommand('power1', value ? 'on' : 'off');
-    return true;
+    return this.sendCommand('power1', value ? 'on' : 'off');
   }
 
   async onCapabilityOnoff2(value) {
-    this.sendCommand('power2', value ? 'on' : 'off');
-    return true;
+    return this.sendCommand('power2', value ? 'on' : 'off');
   }
 
   async onCapabilityOnoff3(value) {
-    this.sendCommand('power3', value ? 'on' : 'off');
-    return true;
+    return this.sendCommand('power3', value ? 'on' : 'off');
   }
 
   async onCapabilityOnoff4(value) {
-    this.sendCommand('power4', value ? 'on' : 'off');
-    return true;
+    return this.sendCommand('power4', value ? 'on' : 'off');
   }
   
   async onCapabilityWindowCoveringsSet(value) {
      if (value <= 0)
-	this.sendCommand('shutterclose');
+	return this.sendCommand('shutterclose');
      else if (value >= 1)
-	this.sendCommand('shutteropen');
+	return this.sendCommand('shutteropen');
      else
-	this.sendCommand('shutterposition', String(value * 100));
-    return true;
+	return this.sendCommand('shutterposition', String(value * 100));
   }
 
   async onFlowCardAction(action, args, state) {
@@ -237,8 +248,7 @@ module.exports = class TasmotaDevice extends Homey.Device {
         return false;
       }
 
-      this.setCapabilityValue(cap, value);
-      return this.onCapabilityOnoff(switchNr, value);
+      return this.onCapabilityOnoffX(switchNr, value);
     }
 
     else if (this.getClass() == 'blinds') {
@@ -260,7 +270,6 @@ module.exports = class TasmotaDevice extends Homey.Device {
         return false;
       }
 
-      this.setCapabilityValue(cap, value);
       return this.onCapabilityWindowCoveringsSet(value);
     }
 

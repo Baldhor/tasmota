@@ -21,6 +21,7 @@ module.exports = class TasmotaDriver extends Homey.Driver {
         let flowName = `tasmota-for-homey-${ prop }`;
 
         // Register flow trigger
+        this.log("Registering trigger: " + flowName);
         this.triggers[prop] = new Homey.FlowCardTriggerDevice(flowName).register();
       });
     }
@@ -31,6 +32,7 @@ module.exports = class TasmotaDriver extends Homey.Driver {
       let flowName = `tasmota-for-homey-${ prop }`;
 
       // Register flow trigger
+      this.log("Registering trigger: " + flowName);
       this.triggers[prop] = new Homey.FlowCardTriggerDevice(flowName).register();
     });
   }
@@ -45,6 +47,7 @@ module.exports = class TasmotaDriver extends Homey.Driver {
         let flowName = `tasmota-for-homey-${ prop }`;
 
         // Register flow action
+        this.log("Registering action: " + flowName);
         this.actions[prop]= new Homey.FlowCardAction(flowName)
             .register()
             .registerRunListener((args, state) => {
@@ -59,6 +62,7 @@ module.exports = class TasmotaDriver extends Homey.Driver {
       let flowName = `tasmota-for-homey-${ prop }`;
 
       // Register flow action
+      this.log("Registering action: " + flowName);
       this.actions[prop]= new Homey.FlowCardAction(flowName)
           .register()
           .registerRunListener((args, state) => {
