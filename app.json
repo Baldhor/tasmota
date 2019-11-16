@@ -28,8 +28,8 @@
   "category": "appliances",
   "compatibility": ">=1.5.0",
   "author": {
-    "name": "Robert Klep",
-    "email": "robert@klep.name"
+    "name": "Baldhor",
+    "email": "baldhors@gmail.com"
   },
   "contributors": {
     "developers": [
@@ -38,14 +38,15 @@
         "email": "robert@klep.name"
       },
       {
-        "name": "Patrice Silliard"
+        "name": "Baldhor",
+        "email": "baldhors@gmail.com"
       }
     ]
   },
   "flow": {
     "triggers": [
       {
-        "id": "switch-1-on",
+        "id": "tasmota-for-homey-switch-1-on",
         "title": {
           "en": "Switch 1 turned on"
         },
@@ -53,12 +54,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff1"
+            "filter": "class=socket&capabilities=onoff.1"
           }
         ]
       },
       {
-        "id": "switch-2-on",
+        "id": "tasmota-for-homey-switch-2-on",
         "title": {
           "en": "Switch 2 turned on"
         },
@@ -66,12 +67,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff2"
+            "filter": "class=socket&capabilities=onoff.2"
           }
         ]
       },
       {
-        "id": "switch-3-on",
+        "id": "tasmota-for-homey-switch-3-on",
         "title": {
           "en": "Switch 3 turned on"
         },
@@ -79,12 +80,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff3"
+            "filter": "class=socket&capabilities=onoff.3"
           }
         ]
       },
       {
-        "id": "switch-4-on",
+        "id": "tasmota-for-homey-switch-4-on",
         "title": {
           "en": "Switch 4 turned on"
         },
@@ -92,12 +93,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff4"
+            "filter": "class=socket&capabilities=onoff.4"
           }
         ]
       },
       {
-        "id": "switch-1-off",
+        "id": "tasmota-for-homey-switch-1-off",
         "title": {
           "en": "Switch 1 turned off"
         },
@@ -105,12 +106,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff1"
+            "filter": "class=socket&capabilities=onoff.1"
           }
         ]
       },
       {
-        "id": "switch-2-off",
+        "id": "tasmota-for-homey-switch-2-off",
         "title": {
           "en": "Switch 2 turned off"
         },
@@ -118,12 +119,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff2"
+            "filter": "class=socket&capabilities=onoff.2"
           }
         ]
       },
       {
-        "id": "switch-3-off",
+        "id": "tasmota-for-homey-switch-3-off",
         "title": {
           "en": "Switch 3 turned off"
         },
@@ -131,12 +132,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff3"
+            "filter": "class=socket&capabilities=onoff.3"
           }
         ]
       },
       {
-        "id": "switch-4-off",
+        "id": "tasmota-for-homey-switch-4-off",
         "title": {
           "en": "Switch 4 turned off"
         },
@@ -144,12 +145,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff4"
+            "filter": "class=socket&capabilities=onoff.4"
           }
         ]
       },
       {
-        "id": "shutter-1-opened",
+        "id": "tasmota-for-homey-shutter-opened",
         "title": {
           "en": "shutter 1 opened"
         },
@@ -162,7 +163,7 @@
         ]
       },
       {
-        "id": "shutter-1-closed",
+        "id": "tasmota-for-homey-shutter-closed",
         "title": {
           "en": "shutter 1 closed"
         },
@@ -173,36 +174,11 @@
             "filter": "class=blinds&capabilities=windowcoverings_set"
           }
         ]
-      },
-      {
-        "id": "shutter-1-changed",
-        "title": {
-          "en": "shutter 1 position changed"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "class=blinds&capabilities=windowcoverings_set"
-          }
-        ],
-        "tokens": [
-          {
-            "name": "position",
-            "type": "number",
-            "title": {
-              "en": "Position (%)"
-            },
-            "example": {
-              "en": "10"
-            }
-          }
-        ]
       }
     ],
     "actions": [
       {
-        "id": "switch-1-on",
+        "id": "tasmota-for-homey-switch-1-on",
         "title": {
           "en": "Switch 1 on"
         },
@@ -210,12 +186,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff1"
+            "filter": "class=socket&capabilities=onoff.1"
           }
         ]
       },
       {
-        "id": "switch-2-on",
+        "id": "tasmota-for-homey-switch-2-on",
         "title": {
           "en": "Switch 2 on"
         },
@@ -223,12 +199,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff2"
+            "filter": "class=socket&capabilities=onoff.2"
           }
         ]
       },
       {
-        "id": "switch-3-on",
+        "id": "tasmota-for-homey-switch-3-on",
         "title": {
           "en": "Switch 3 on"
         },
@@ -236,12 +212,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff3"
+            "filter": "class=socket&capabilities=onoff.3"
           }
         ]
       },
       {
-        "id": "switch-4-on",
+        "id": "tasmota-for-homey-switch-4-on",
         "title": {
           "en": "Switch 4 on"
         },
@@ -249,12 +225,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff4"
+            "filter": "class=socket&capabilities=onoff.4"
           }
         ]
       },
       {
-        "id": "switch-1-off",
+        "id": "tasmota-for-homey-switch-1-off",
         "title": {
           "en": "Switch 1 off"
         },
@@ -262,12 +238,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff1"
+            "filter": "class=socket&capabilities=onoff.1"
           }
         ]
       },
       {
-        "id": "switch-2-off",
+        "id": "tasmota-for-homey-switch-2-off",
         "title": {
           "en": "Switch 2 off"
         },
@@ -275,12 +251,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff2"
+            "filter": "class=socket&capabilities=onoff.2"
           }
         ]
       },
       {
-        "id": "switch-3-off",
+        "id": "tasmota-for-homey-switch-3-off",
         "title": {
           "en": "Switch 3 off"
         },
@@ -288,12 +264,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff3"
+            "filter": "class=socket&capabilities=onoff.3"
           }
         ]
       },
       {
-        "id": "switch-4-off",
+        "id": "tasmota-for-homey-switch-4-off",
         "title": {
           "en": "Switch 4 off"
         },
@@ -301,12 +277,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff4"
+            "filter": "class=socket&capabilities=onoff.4"
           }
         ]
       },
       {
-        "id": "switch-1-toggle",
+        "id": "tasmota-for-homey-switch-1-toggle",
         "title": {
           "en": "Toggle switch 1"
         },
@@ -314,12 +290,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff1"
+            "filter": "class=socket&capabilities=onoff.1"
           }
         ]
       },
       {
-        "id": "switch-2-toggle",
+        "id": "tasmota-for-homey-switch-2-toggle",
         "title": {
           "en": "Toggle switch 2"
         },
@@ -327,12 +303,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff2"
+            "filter": "class=socket&capabilities=onoff.2"
           }
         ]
       },
       {
-        "id": "switch-3-toggle",
+        "id": "tasmota-for-homey-switch-3-toggle",
         "title": {
           "en": "Toggle switch 3"
         },
@@ -340,12 +316,12 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff3"
+            "filter": "class=socket&capabilities=onoff.3"
           }
         ]
       },
       {
-        "id": "switch-4-toggle",
+        "id": "tasmota-for-homey-switch-4-toggle",
         "title": {
           "en": "Toggle switch 4"
         },
@@ -353,14 +329,14 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "class=socket&capabilities=onoff4"
+            "filter": "class=socket&capabilities=onoff.4"
           }
         ]
       },
       {
-        "id": "shutter-1-open",
+        "id": "tasmota-for-homey-shutter-open",
         "title": {
-          "en": "Open shutter 1"
+          "en": "Open shutter"
         },
         "args": [
           {
@@ -371,9 +347,9 @@
         ]
       },
       {
-        "id": "shutter-1-stop",
+        "id": "tasmota-for-homey-shutter-stop",
         "title": {
-          "en": "Stop shutter 1"
+          "en": "Stop shutter"
         },
         "args": [
           {
@@ -384,38 +360,15 @@
         ]
       },
       {
-        "id": "shutter-1-close",
+        "id": "tasmota-for-homey-shutter-close",
         "title": {
-          "en": "Close shutter 1"
+          "en": "Close shutter"
         },
         "args": [
           {
             "name": "device",
             "type": "device",
             "filter": "class=blinds&capabilities=windowcoverings_set"
-          }
-        ]
-      },
-      {
-        "id": "shutter-1-set",
-        "title": {
-          "en": "Set shutter 1 position (%)"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "class=blinds&capabilities=windowcoverings_set"
-          },
-          {
-            "name": "position",
-            "type": "number",
-            "min": 1,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "Position (%)"
-            }
           }
         ]
       }
@@ -436,7 +389,7 @@
         "windowcoverings_set"
       ],
       "capabilitiesOptions": {
-        "onoff1": {
+        "onoff.1": {
           "greyout": false
         }
       },
