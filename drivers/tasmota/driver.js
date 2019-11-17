@@ -203,10 +203,20 @@ module.exports = class TasmotaDriver extends Homey.Driver {
       
       this.log('device class is ' + myclass + ', and its filtered capabilities are: ' + capabilities.join(', '));
       
+      // Choose the icon based on class
+      if (myclass == 'blinds') {
+        device.icon = '/app/' + Homey.manifest.id + '/drivers/tasmota/assets/icons/shutter.svg';
+      }
+      else {
+        device.icon = '/app/' + Homey.manifest.id + '/drivers/tasmota/assets/icons/socket.svg';
+      }
+      this.log('Icon: ' + device.icon);
+
       // Return the device data to the frontend.
       return callback(null, [{
         name  : name,
         class : myclass,
+        icon  : device.icon,
         data  : { id },
         store : {
           module  : info1.Module,

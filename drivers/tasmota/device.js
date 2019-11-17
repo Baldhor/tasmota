@@ -185,6 +185,9 @@ module.exports = class TasmotaDevice extends Homey.Device {
       this.log('Send trigger: ' + triggerName);
       this.getDriver().triggers[triggerName].trigger(this);
     }
+    else {
+      this.log('No change for capability ' + capabilityName);
+    }
   }
 
   onShutter1PositionReceived(data) {
@@ -203,6 +206,12 @@ module.exports = class TasmotaDevice extends Homey.Device {
         this.log('Send trigger: ' + triggerName);
         this.getDriver().triggers[triggerName].trigger(this);
       }
+      else {
+        this.log('unsupported trigger (position changed ?)');
+      }
+    }
+    else {
+      this.log('No change for capability ' + capabilityName);
     }
   }
 
@@ -223,32 +232,67 @@ module.exports = class TasmotaDevice extends Homey.Device {
   }
 
   async onCapabilityOnoff1(value) {
-    this.sendCommand('power1', value ? 'on' : 'off');
+    let capabilityName= 'onoff.1';
+    let newValue= value ? 'on' : 'off';
+    let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    
+    if (newValue != oldValue) {
+      this.sendCommand('power1', value ? 'on' : 'off');
+    }
+
     return true;
   }
 
   async onCapabilityOnoff2(value) {
-    this.sendCommand('power2', value ? 'on' : 'off');
+    let capabilityName= 'onoff.2';
+    let newValue= value ? 'on' : 'off';
+    let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    
+    if (newValue != oldValue) {
+      this.sendCommand('power2', value ? 'on' : 'off');
+    }
+
     return true;
   }
 
   async onCapabilityOnoff3(value) {
-    this.sendCommand('power3', value ? 'on' : 'off');
+    let capabilityName= 'onoff.3';
+    let newValue= value ? 'on' : 'off';
+    let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    
+    if (newValue != oldValue) {
+      this.sendCommand('power3', value ? 'on' : 'off');
+    }
+
     return true;
   }
 
   async onCapabilityOnoff4(value) {
-    this.sendCommand('power4', value ? 'on' : 'off');
+    let capabilityName= 'onoff.4';
+    let newValue= value ? 'on' : 'off';
+    let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    
+    if (newValue != oldValue) {
+      this.sendCommand('power4', value ? 'on' : 'off');
+    }
+
     return true;
   }
   
   async onCapabilityWindowCoveringsSet(value) {
-    if (value <= 0)
-      this.sendCommand('shutterclose');
-    else if (value >= 1)
-      this.sendCommand('shutteropen');
-    else
-      this.sendCommand('shutterposition', String(value * 100));
+    let capabilityName= 'windowcovergins_set';
+    let newValue= value;
+    let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    
+    if (newValue != oldValue) {
+      if (newValue <= 0)
+        this.sendCommand('shutterclose');
+      else if (newValue >= 1)
+        this.sendCommand('shutteropen');
+      else
+        this.sendCommand('shutterposition', String(newValue * 100));
+    }
+
     return true;
   }
 

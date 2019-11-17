@@ -378,6 +378,7 @@
     {
       "id": "tasmota",
       "class": "socket",
+      "icon": "/assets/icon.svg",
       "name": {
         "en": "Generic (Tasmota)"
       },
@@ -390,7 +391,28 @@
       ],
       "capabilitiesOptions": {
         "onoff.1": {
-          "greyout": false
+          "title": {
+            "en": "Switch 1",
+            "nl": "Schakelaar 1"
+          }
+        },
+        "onoff.2": {
+          "title": {
+            "en": "Switch 2",
+            "nl": "Schakelaar 2"
+          }
+        },
+        "onoff.3": {
+          "title": {
+            "en": "Switch 3",
+            "nl": "Schakelaar 3"
+          }
+        },
+        "onoff.4": {
+          "title": {
+            "en": "Switch 4",
+            "nl": "Schakelaar 4"
+          }
         }
       },
       "images": {
