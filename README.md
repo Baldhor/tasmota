@@ -39,23 +39,27 @@ Open a command line, and install the athom-cli program by running the following 
 
 $ npm install -g homey
 
-3. Install git
+3. Setup your Homey credentials
+
+$ homey login
+
+4. Install git
 
 Download a git client (for example: https://git-scm.com/) and install it.
 
-4. Clone the repository
+5. Clone the repository
 
 $ git clone https://github.com/Baldhor/tasmota-for-homey.git
 
-5. Go in the newly created folder
+6. Go in the newly created folder
 
 $ cd tasmota-for-homey
 
-6. Install the application on your Homey
+7. Install the application on your Homey
 
 $ homey app install
 
-7. Enjoy
+8. Enjoy
 
 And don't hesite to report any issue or even pull request/enhancement
 
