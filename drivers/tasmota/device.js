@@ -77,10 +77,15 @@ module.exports = class TasmotaDevice extends Homey.Device {
 
     // Wait for device to return status.
     let status = await this.conn.wait();
+    if (status == null) {
+      this.log('device went offline');
+      this.setUnavailable(Homey.__('device.connection_lost'));
+      return;
+    }
 
     // We now know the device is online.
     this.setAvailable();
-    this.log('device came online');
+    this.log('device came online with status: ' + status);
 
     // Update settings to reflect the values passed by the device.
     this.setSettings({
@@ -141,6 +146,9 @@ module.exports = class TasmotaDevice extends Homey.Device {
           else if(payload['POWER4'] && this.hasCapability('onoff.4')) {
             this.onPowerXReceived(4, payload['POWER4']);
           }
+          else {
+            this.log('ignoring message (1)');
+          }
         }
         else if (command === 'power1' && this.hasCapability('onoff.1')) {
           this.onPowerXReceived(1, payload);
@@ -154,6 +162,9 @@ module.exports = class TasmotaDevice extends Homey.Device {
         else if (command === 'power4' && this.hasCapability('onoff.4')) {
           this.onPowerXReceived(4, payload);
         }
+        else {
+          this.log('ignoring message (2)');
+        }
       }
       else if (this.getClass() == 'blinds' && this.hasCapability('windowcoverings_set')) {
         this.log('checking for blinds device');
@@ -166,6 +177,12 @@ module.exports = class TasmotaDevice extends Homey.Device {
         else if (command == 'result' && payload['Shutter1'] && payload['Shutter1']['Position']) {
           this.onShutter1PositionReceived(payload['Shutter1']['Position']);
         }
+        else {
+          this.log('ignoring message (3)');
+        }
+      }
+      else {
+        this.log('ignoring message (4)');
       }
     }
   }
@@ -228,6 +245,8 @@ module.exports = class TasmotaDevice extends Homey.Device {
     else if (switchNr == 4) {
       return this.onCapabilityOnoff4(value);
     }
+
+    this.log('rejecting');
     return false;
   }
 

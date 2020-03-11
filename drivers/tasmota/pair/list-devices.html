@@ -68,7 +68,7 @@
             <tr v-for='device in devices'>
               <td class='collapsing'>
                 <div class  = 'image-container'
-                     :style = '{ "-webkit-mask-image" : "url(..//assets/icons/" + device.device.icon + ")" }'
+                     :style = '{ "-webkit-mask-image" : "url(/app/com.athom.tasmota/drivers/tasmota/assets/" + device.device.icon + ")" }'
                 ></div>
               </td>
               <td><editable :content='device.device.name' @update='device.device.name = $event'>{{ device.device.name }}</<editable></td>
@@ -112,14 +112,6 @@
               return this.showError(Error(Homey.__('pair.tasmota.list.no_devices')));
             }
             this.devices = devices.map(device => {
-              // Icon based on the device class
-              if (device.class == 'blinds') {
-                device.icon = 'shutter.svg';
-              }
-              else {
-                device.icon = 'socket.svg';
-              }
-
               return {
                 name     : device.name,
                 type     : '',
@@ -140,8 +132,6 @@
             let devices   = unwrapped.devices.filter(d => d.selected).map(d => d.device);
 
             let addDevice = function(device) {
-              // Fix icon path
-              device.icon = '/app/com.athom.tasmota/drivers/tasmota/assets/icons/' + device.icon;
               return new Promise((resolve, reject) => {
                 Homey.addDevice(device, e => e ? reject(e) : resolve());
               });

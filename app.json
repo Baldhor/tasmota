@@ -5,7 +5,7 @@
   "homeyCommunityTopicId": 119,
   "sdk": 2,
   "name": {
-    "en": "Tasmota"
+    "en": "Tasmota for Homey"
   },
   "permissions": [
     "homey:manager:api"
@@ -377,8 +377,7 @@
   "drivers": [
     {
       "id": "tasmota",
-      "class": "socket",
-      "icon": "/assets/icon.svg",
+      "class": "other",
       "name": {
         "en": "Generic (Tasmota)"
       },
