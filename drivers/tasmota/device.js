@@ -255,6 +255,9 @@ module.exports = class TasmotaDevice extends Homey.Device {
     let newValue= value ? 'on' : 'off';
     let oldValue= this.lastKnowCapabilityValues[capabilityName];
     
+    // Put back old value, only network message can change the value to ensure the command is applied! But no trigger!
+    this.setCapabilityValue(capabilityName, oldValue);
+    
     if (newValue != oldValue) {
       this.sendCommand('power1', value ? 'on' : 'off');
     }
@@ -266,6 +269,9 @@ module.exports = class TasmotaDevice extends Homey.Device {
     let capabilityName= 'onoff.2';
     let newValue= value ? 'on' : 'off';
     let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    
+    // Put back old value, only network message can change the value to ensure the command is applied! But no trigger!
+    this.setCapabilityValue(capabilityName, oldValue);
     
     if (newValue != oldValue) {
       this.sendCommand('power2', value ? 'on' : 'off');
@@ -279,6 +285,9 @@ module.exports = class TasmotaDevice extends Homey.Device {
     let newValue= value ? 'on' : 'off';
     let oldValue= this.lastKnowCapabilityValues[capabilityName];
     
+    // Put back old value, only network message can change the value to ensure the command is applied! But no trigger!
+    this.setCapabilityValue(capabilityName, oldValue);
+    
     if (newValue != oldValue) {
       this.sendCommand('power3', value ? 'on' : 'off');
     }
@@ -291,6 +300,9 @@ module.exports = class TasmotaDevice extends Homey.Device {
     let newValue= value ? 'on' : 'off';
     let oldValue= this.lastKnowCapabilityValues[capabilityName];
     
+    // Put back old value, only network message can change the value to ensure the command is applied! But no trigger!
+    this.setCapabilityValue(capabilityName, oldValue);
+    
     if (newValue != oldValue) {
       this.sendCommand('power4', value ? 'on' : 'off');
     }
@@ -302,6 +314,9 @@ module.exports = class TasmotaDevice extends Homey.Device {
     let capabilityName= 'windowcovergins_set';
     let newValue= value;
     let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    
+    // Put back old value, only network message can change the value to ensure the command is applied! But no trigger!
+    this.setCapabilityValue(capabilityName, oldValue);
     
     if (newValue != oldValue) {
       if (newValue <= 0)
