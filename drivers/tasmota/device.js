@@ -7,9 +7,6 @@ module.exports = class TasmotaDevice extends Homey.Device {
     this.log(`device init: name = ${ this.getName() }, id = ${ this.getId() }, module type = ${ this.getModule() }, version = ${ this.getVersion() }, topic = ${ this.getTopic() }`);
     this.log('device init: class = ' + this.getClass() + ', capabilities: ' + this.getCapabilities().join(', '));
     
-    // Cannot trust capabilityValue from Homey, so we better maintains our own based on device feedback, and not what Homey (or the user believe)!
-    this.lastKnowCapabilityValues= {};
-
     // Register capability listeners
     if (this.getClass() == 'socket' && this.hasCapability('onoff.1')) {
       this.log('register capability listener: ' + 'onoff.1');
@@ -132,8 +129,8 @@ module.exports = class TasmotaDevice extends Homey.Device {
 
       if (this.getClass() == 'socket') {
         this.log('checking for socket device');
-        if (command === 'state') {
-          this.log('checking state command for socket device');
+        if (command === 'state' || command === 'result' ) {
+          this.log('checking state/result command for socket device');
           if(payload['POWER1'] && this.hasCapability('onoff.1')) {
             this.onPowerXReceived(1, payload['POWER1']);
           }
@@ -192,11 +189,10 @@ module.exports = class TasmotaDevice extends Homey.Device {
     let capabilityName= 'onoff.' + switchNr;
 
     let newValue= (data === 'ON');
-    let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    let oldValue= this.getCapabilityValue(capabilityName);
     this.setCapabilityValue(capabilityName, newValue);
     
     if (newValue != oldValue) {
-      this.lastKnowCapabilityValues[capabilityName]= newValue;
       let triggerName= newValue ? `switch-${ switchNr }-on` : `switch-${ switchNr }-off`;
       
       this.log('Send trigger: ' + triggerName);
@@ -212,11 +208,10 @@ module.exports = class TasmotaDevice extends Homey.Device {
     let capabilityName= 'windowcoverings_set';
 
     let newValue= (parseFloat(data) / 100);
-    let oldValue= this.lastKnowCapabilityValues[capabilityName];
+    let oldValue= this.getCapabilityValue(capabilityName);
     this.setCapabilityValue(capabilityName, newValue);
 
     if (newValue != oldValue) {
-      this.lastKnowCapabilityValues[capabilityName]= newValue;
       let triggerName= (newValue == 1) ? `shutter-opened` : (newValue == 0) ? `shutter-closed` : null;
       
       if (triggerName != null) {
@@ -251,61 +246,25 @@ module.exports = class TasmotaDevice extends Homey.Device {
   }
 
   async onCapabilityOnoff1(value) {
-    let capabilityName= 'onoff.1';
-    let newValue= value ? 'on' : 'off';
-    let oldValue= this.lastKnowCapabilityValues[capabilityName];
-    
-    // Put back old value, only network message can change the value to ensure the command is applied! But no trigger!
-    this.setCapabilityValue(capabilityName, oldValue);
-    
-    if (newValue != oldValue) {
-      this.sendCommand('power1', value ? 'on' : 'off');
-    }
+    this.sendCommand('power1', value ? 'on' : 'off');
 
     return true;
   }
 
   async onCapabilityOnoff2(value) {
-    let capabilityName= 'onoff.2';
-    let newValue= value ? 'on' : 'off';
-    let oldValue= this.lastKnowCapabilityValues[capabilityName];
-    
-    // Put back old value, only network message can change the value to ensure the command is applied! But no trigger!
-    this.setCapabilityValue(capabilityName, oldValue);
-    
-    if (newValue != oldValue) {
-      this.sendCommand('power2', value ? 'on' : 'off');
-    }
+    this.sendCommand('power2', value ? 'on' : 'off');
 
     return true;
   }
 
   async onCapabilityOnoff3(value) {
-    let capabilityName= 'onoff.3';
-    let newValue= value ? 'on' : 'off';
-    let oldValue= this.lastKnowCapabilityValues[capabilityName];
-    
-    // Put back old value, only network message can change the value to ensure the command is applied! But no trigger!
-    this.setCapabilityValue(capabilityName, oldValue);
-    
-    if (newValue != oldValue) {
-      this.sendCommand('power3', value ? 'on' : 'off');
-    }
+    this.sendCommand('power3', value ? 'on' : 'off');
 
     return true;
   }
 
   async onCapabilityOnoff4(value) {
-    let capabilityName= 'onoff.4';
-    let newValue= value ? 'on' : 'off';
-    let oldValue= this.lastKnowCapabilityValues[capabilityName];
-    
-    // Put back old value, only network message can change the value to ensure the command is applied! But no trigger!
-    this.setCapabilityValue(capabilityName, oldValue);
-    
-    if (newValue != oldValue) {
-      this.sendCommand('power4', value ? 'on' : 'off');
-    }
+    this.sendCommand('power4', value ? 'on' : 'off');
 
     return true;
   }
@@ -315,17 +274,12 @@ module.exports = class TasmotaDevice extends Homey.Device {
     let newValue= value;
     let oldValue= this.lastKnowCapabilityValues[capabilityName];
     
-    // Put back old value, only network message can change the value to ensure the command is applied! But no trigger!
-    this.setCapabilityValue(capabilityName, oldValue);
-    
-    if (newValue != oldValue) {
-      if (newValue <= 0)
-        this.sendCommand('shutterclose');
-      else if (newValue >= 1)
-        this.sendCommand('shutteropen');
-      else
-        this.sendCommand('shutterposition', String(newValue * 100));
-    }
+    if (newValue <= 0)
+      this.sendCommand('shutterclose');
+    else if (newValue >= 1)
+      this.sendCommand('shutteropen');
+    else
+      this.sendCommand('shutterposition', String(newValue * 100));
 
     return true;
   }
@@ -365,7 +319,7 @@ module.exports = class TasmotaDevice extends Homey.Device {
       cap= 'windowcoverings_set';
       
       if (action.endsWith('-stop')) {
-	return this.sendCommand('shutterstop');
+	    return this.sendCommand('shutterstop');
       }
       else if (action.endsWith('-open')) {
         value= 1;
