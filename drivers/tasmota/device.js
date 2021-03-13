@@ -132,31 +132,37 @@ module.exports = class TasmotaDevice extends Homey.Device {
         if (command === 'state' || command === 'result' ) {
           this.log('checking state/result command for socket device');
           if(payload['POWER1'] && this.hasCapability('onoff.1')) {
+			this.log('checking state/result command for socket device => found power1');
             this.onPowerXReceived(1, payload['POWER1']);
           }
-          else if(payload['POWER2'] && this.hasCapability('onoff.2')) {
+          if(payload['POWER2'] && this.hasCapability('onoff.2')) {
+			this.log('checking state/result command for socket device => found power2');
             this.onPowerXReceived(2, payload['POWER2']);
           }
-          else if(payload['POWER3'] && this.hasCapability('onoff.3')) {
+          if(payload['POWER3'] && this.hasCapability('onoff.3')) {
+			this.log('checking state/result command for socket device => found power3');
             this.onPowerXReceived(3, payload['POWER3']);
           }
-          else if(payload['POWER4'] && this.hasCapability('onoff.4')) {
+          if(payload['POWER4'] && this.hasCapability('onoff.4')) {
+			this.log('checking state/result command for socket device => found power4');
             this.onPowerXReceived(4, payload['POWER4']);
           }
-          else {
-            this.log('ignoring message (1)');
-          }
+          this.log('checking state/result command for socket device => no more to process');
         }
         else if (command === 'power1' && this.hasCapability('onoff.1')) {
+		  this.log('found power1');
           this.onPowerXReceived(1, payload);
         }
         else if (command === 'power2' && this.hasCapability('onoff.2')) {
+		  this.log('found power2');
           this.onPowerXReceived(2, payload);
         }
         else if (command === 'power3' && this.hasCapability('onoff.3')) {
+		  this.log('found power3');
           this.onPowerXReceived(3, payload);
         }
         else if (command === 'power4' && this.hasCapability('onoff.4')) {
+		  this.log('found power4');
           this.onPowerXReceived(4, payload);
         }
         else {
@@ -272,7 +278,6 @@ module.exports = class TasmotaDevice extends Homey.Device {
   async onCapabilityWindowCoveringsSet(value) {
     let capabilityName= 'windowcovergins_set';
     let newValue= value;
-    let oldValue= this.lastKnowCapabilityValues[capabilityName];
     
     if (newValue <= 0)
       this.sendCommand('shutterclose');
