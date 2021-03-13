@@ -105,6 +105,8 @@ module.exports = class TasmotaDevice extends Homey.Device {
       if (this.hasCapability('onoff.4')) {
         this.onPowerXReceived(4, !!status.Power4);
       }
+	  
+	  this.scheduleCheckDevices();
     }
 
     // Maintain online/offline status.
@@ -187,6 +189,47 @@ module.exports = class TasmotaDevice extends Homey.Device {
       else {
         this.log('ignoring message (4)');
       }
+    }
+  }
+  
+  clearCheckDevices() {
+    if (this.curTimeout) {
+      clearTimeout(this.curTimeout);
+      this.curTimeout = undefined;
+    }
+  }
+  
+  scheduleCheckDevices(seconds = 300) {
+    this.clearCheckDevices();
+    this.curTimeout = setTimeout(this.checkDevices.bind(this), seconds * 1000);
+  }
+  
+  async checkDevices() {
+    try {
+      this.log('checking device: ' + this.getClass());
+      this.clearCheckDevices();
+      if (this.getClass() == 'socket') {
+        if (this.hasCapability('onoff.1')) {
+	      this.log('checking device onoff.1 : ' + this.getCapabilityValue('onoff.1') ? 'on' : 'off');
+          this.onCapabilityOnoff1(this.getCapabilityValue('onoff.1'));
+        }
+        if (this.hasCapability('onoff.2')) {
+	      this.log('checking device onoff.2 : ' + this.getCapabilityValue('onoff.2') ? 'on' : 'off');
+          this.onCapabilityOnoff2(this.getCapabilityValue('onoff.2'));
+        }
+        if (this.hasCapability('onoff.3')) {
+	      this.log('checking device onoff.3 : ' + this.getCapabilityValue('onoff.3') ? 'on' : 'off');
+          this.onCapabilityOnoff3(this.getCapabilityValue('onoff.3'));
+        }
+        if (this.hasCapability('onoff.4')) {
+	      this.log('checking device onoff.4 : ' + this.getCapabilityValue('onoff.4') ? 'on' : 'off');
+          this.onCapabilityOnoff4(this.getCapabilityValue('onoff.4'));
+        }
+      }
+    } catch (err) {
+      this.log('checkDevices', err);
+    } finally {
+      this.scheduleCheckDevices();
     }
   }
   
