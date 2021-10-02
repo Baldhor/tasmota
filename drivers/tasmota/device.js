@@ -176,11 +176,11 @@ module.exports = class TasmotaDevice extends Homey.Device {
         if (command == 'shutter1') {
           this.onShutter1PositionReceived(payload);
         }
-        else if (command == 'sensor' && payload['Shutter1'] && payload['Shutter1']['Position']) {
-          this.onShutter1PositionReceived(payload['Shutter1']['Position']);
+        else if (command == 'sensor' && payload['Shutter1'] && payload['Shutter1']['Position'] && payload['Shutter1']['Target']) {
+          this.onShutter1PositionReceivedWithTarget(payload['Shutter1']['Position'], payload['Shutter1']['Target']);
         }
-        else if (command == 'result' && payload['Shutter1'] && payload['Shutter1']['Position']) {
-          this.onShutter1PositionReceived(payload['Shutter1']['Position']);
+        else if (command == 'result' && payload['Shutter1'] && payload['Shutter1']['Position'] && payload['Shutter1']['Target']) {
+          this.onShutter1PositionReceivedWithTarget(payload['Shutter1']['Position'], payload['Shutter1']['Target']);
         }
         else {
           this.log('ignoring message (3)');
@@ -271,6 +271,35 @@ module.exports = class TasmotaDevice extends Homey.Device {
         this.log('unsupported trigger (position changed ?)');
       }
     }
+    else {
+      this.log('No change for capability ' + capabilityName);
+    }
+  }
+
+  onShutter1PositionReceivedWithTarget(data, target) {
+    this.log('shutter1 position received:', data, ' target:', target);
+    let capabilityName= 'windowcoverings_set';
+
+    let newValue= (parseFloat(data) / 100);
+    let oldValue= this.getCapabilityValue(capabilityName);
+    this.setCapabilityValue(capabilityName, newValue);
+
+    if (newValue != oldValue) {
+      if (data == target) {
+	    let triggerName= (newValue == 1) ? `shutter-opened` : (newValue == 0) ? `shutter-closed` : null;
+        
+        if (triggerName != null) {
+          this.log('Send trigger: ' + triggerName);
+          this.getDriver().triggers[triggerName].trigger(this);
+        }
+        else {
+          this.log('unsupported trigger (position changed ?)');
+        }
+      }
+	  else {
+        this.log('target is different, ignoring opened/closed events');
+	  }
+	}
     else {
       this.log('No change for capability ' + capabilityName);
     }
